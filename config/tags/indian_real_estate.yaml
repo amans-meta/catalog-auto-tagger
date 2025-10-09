@@ -1,0 +1,294 @@
+# Indian Real Estate Tag Definitions
+# Customized for Indian property market with INR pricing and local terminology
+
+property_types:
+  - name: "apartment"
+    keywords: ["apartment", "flat", "residential unit", "apt"]
+    category: "property_type"
+    priority: 1
+    min_confidence: 0.5
+
+  - name: "independent_house"
+    keywords: ["independent house", "individual house", "standalone house", "bungalow", "villa"]
+    category: "property_type"
+    priority: 1
+    min_confidence: 0.5
+
+  - name: "villa"
+    keywords: ["villa", "luxury villa", "premium villa", "independent villa"]
+    category: "property_type"
+    priority: 1
+    min_confidence: 0.5
+
+  - name: "duplex"
+    keywords: ["duplex", "duplex house", "two storey", "double storey"]
+    category: "property_type"
+    priority: 2
+    min_confidence: 0.6
+
+  - name: "penthouse"
+    keywords: ["penthouse", "terrace flat", "top floor", "duplex penthouse"]
+    category: "property_type"
+    priority: 2
+    min_confidence: 0.6
+
+  - name: "plot"
+    keywords: ["plot", "land", "residential plot", "site", "vacant land"]
+    category: "property_type"
+    priority: 1
+    min_confidence: 0.5
+
+bhk_configuration:
+  - name: "studio"
+    keywords: ["studio", "studio apartment", "1rk", "1 rk"]
+    patterns: ["studio", "1\\s*rk"]
+    category: "size"
+    priority: 1
+    min_confidence: 0.7
+
+  - name: "1bhk"
+    keywords: ["1bhk", "1 bhk", "1bed", "1 bedroom"]
+    patterns: ["1\\s*bhk", "1\\s*bed"]
+    category: "size"
+    priority: 1
+    min_confidence: 0.7
+
+  - name: "2bhk"
+    keywords: ["2bhk", "2 bhk", "2bed", "2 bedroom"]
+    patterns: ["2\\s*bhk", "2\\s*bed"]
+    category: "size"
+    priority: 1
+    min_confidence: 0.7
+
+  - name: "3bhk"
+    keywords: ["3bhk", "3 bhk", "3bed", "3 bedroom"]
+    patterns: ["3\\s*bhk", "3\\s*bed"]
+    category: "size"
+    priority: 1
+    min_confidence: 0.7
+
+  - name: "4bhk"
+    keywords: ["4bhk", "4 bhk", "4bed", "4 bedroom", "4+ bhk"]
+    patterns: ["4\\s*bhk", "4\\s*bed", "4\\+\\s*bhk"]
+    category: "size"
+    priority: 1
+    min_confidence: 0.7
+
+price_ranges_inr:
+  - name: "budget_friendly"
+    keywords: ["affordable", "budget", "economical", "low cost"]
+    patterns: ["₹\\s*[1-9][0-9]{0,5}", "under.*20.*lakh", "below.*20.*lakh"]
+    description: "Properties under ₹20 Lakh"
+    category: "price_range"
+    priority: 2
+    min_confidence: 0.6
+
+  - name: "mid_range"
+    keywords: ["mid range", "moderate", "middle segment"]
+    patterns: ["₹\\s*[2-9][0-9]{6}", "20.*lakh.*1.*crore"]
+    description: "Properties ₹20 Lakh - ₹1 Crore"
+    category: "price_range"
+    priority: 2
+    min_confidence: 0.6
+
+  - name: "high_end"
+    keywords: ["premium", "high-end", "upmarket", "expensive"]
+    patterns: ["₹\\s*[1-4][0-9]{7}", "1.*crore.*5.*crore"]
+    description: "Properties ₹1 Crore - ₹5 Crore"
+    category: "price_range"
+    priority: 2
+    min_confidence: 0.6
+
+  - name: "luxury"
+    keywords: ["luxury", "ultra luxury", "super premium", "elite"]
+    patterns: ["₹\\s*[5-9][0-9]{7}", "above.*5.*crore", "luxury"]
+    description: "Luxury properties above ₹5 Crore"
+    category: "price_range"
+    priority: 1
+    min_confidence: 0.7
+
+location_features:
+  - name: "metro_connectivity"
+    keywords: ["metro", "metro station", "metro connectivity", "subway", "near metro"]
+    patterns: ["metro.*station", "metro.*connectivity"]
+    category: "location"
+    priority: 2
+    min_confidence: 0.6
+
+  - name: "it_hub"
+    keywords: ["IT hub", "tech park", "software park", "cyber city", "IT corridor"]
+    patterns: ["it.*hub", "tech.*park", "cyber.*city"]
+    category: "location"
+    priority: 2
+    min_confidence: 0.6
+
+  - name: "airport_proximity"
+    keywords: ["near airport", "airport road", "airport connectivity"]
+    patterns: ["near.*airport", "airport.*road", "airport.*connectivity"]
+    category: "location"
+    priority: 3
+    min_confidence: 0.6
+
+  - name: "city_center"
+    keywords: ["city center", "central location", "downtown", "main city", "prime location"]
+    category: "location"
+    priority: 2
+    min_confidence: 0.6
+
+  - name: "gated_community"
+    keywords: ["gated community", "gated society", "secured complex", "residential complex"]
+    patterns: ["gated.*community", "gated.*society"]
+    category: "location"
+    priority: 2
+    min_confidence: 0.7
+
+amenities:
+  - name: "swimming_pool"
+    keywords: ["swimming pool", "pool", "swimming facility", "aquatic center"]
+    patterns: ["swimming.*pool", "pool"]
+    category: "amenity"
+    priority: 3
+    min_confidence: 0.7
+
+  - name: "gym_fitness"
+    keywords: ["gym", "fitness center", "fitness club", "gymnasium", "health club"]
+    patterns: ["gym", "fitness.*center"]
+    category: "amenity"
+    priority: 3
+    min_confidence: 0.7
+
+  - name: "parking"
+    keywords: ["parking", "car parking", "covered parking", "reserved parking", "stilt parking"]
+    patterns: ["car.*parking", "parking.*space"]
+    category: "amenity"
+    priority: 2
+    min_confidence: 0.6
+
+  - name: "power_backup"
+    keywords: ["power backup", "generator", "ups", "24x7 power", "uninterrupted power"]
+    patterns: ["power.*backup", "24.*power"]
+    category: "amenity"
+    priority: 2
+    min_confidence: 0.6
+
+  - name: "security"
+    keywords: ["security", "24x7 security", "security guard", "cctv", "surveillance"]
+    patterns: ["24.*security", "security.*guard"]
+    category: "amenity"
+    priority: 2
+    min_confidence: 0.6
+
+  - name: "lift_elevator"
+    keywords: ["lift", "elevator", "lifts available"]
+    category: "amenity"
+    priority: 3
+    min_confidence: 0.7
+
+  - name: "water_supply"
+    keywords: ["water supply", "24x7 water", "borewell", "corporation water"]
+    patterns: ["24.*water", "water.*supply"]
+    category: "amenity"
+    priority: 3
+    min_confidence: 0.6
+
+furnishing_status:
+  - name: "fully_furnished"
+    keywords: ["fully furnished", "furnished", "ready to move", "move-in ready"]
+    patterns: ["fully.*furnished", "ready.*move"]
+    category: "furnishing"
+    priority: 2
+    min_confidence: 0.7
+
+  - name: "semi_furnished"
+    keywords: ["semi furnished", "semi-furnished", "partially furnished"]
+    patterns: ["semi.*furnished"]
+    category: "furnishing"
+    priority: 2
+    min_confidence: 0.7
+
+  - name: "unfurnished"
+    keywords: ["unfurnished", "bare shell", "basic", "empty"]
+    category: "furnishing"
+    priority: 2
+    min_confidence: 0.6
+
+construction_status:
+  - name: "ready_to_move"
+    keywords: ["ready to move", "immediate possession", "ready possession", "completed"]
+    patterns: ["ready.*move", "immediate.*possession"]
+    category: "construction_status"
+    priority: 1
+    min_confidence: 0.7
+
+  - name: "under_construction"
+    keywords: ["under construction", "upcoming", "pre launch", "new launch"]
+    patterns: ["under.*construction", "pre.*launch"]
+    category: "construction_status"
+    priority: 1
+    min_confidence: 0.7
+
+  - name: "new_construction"
+    keywords: ["new construction", "newly built", "brand new", "fresh construction"]
+    patterns: ["new.*construction", "newly.*built"]
+    category: "construction_status"
+    priority: 2
+    min_confidence: 0.6
+
+special_features:
+  - name: "corner_property"
+    keywords: ["corner", "corner plot", "corner flat", "end unit"]
+    patterns: ["corner.*plot", "corner.*flat"]
+    category: "feature"
+    priority: 3
+    min_confidence: 0.7
+
+  - name: "high_floor"
+    keywords: ["high floor", "top floor", "upper floor", "good floor"]
+    patterns: ["high.*floor", "top.*floor"]
+    category: "feature"
+    priority: 3
+    min_confidence: 0.6
+
+  - name: "park_facing"
+    keywords: ["park facing", "garden facing", "park view", "green view"]
+    patterns: ["park.*facing", "garden.*facing"]
+    category: "feature"
+    priority: 3
+    min_confidence: 0.7
+
+  - name: "road_facing"
+    keywords: ["road facing", "main road", "highway facing", "road frontage"]
+    patterns: ["road.*facing", "main.*road"]
+    category: "feature"
+    priority: 3
+    min_confidence: 0.6
+
+  - name: "vastu_compliant"
+    keywords: ["vastu", "vastu compliant", "vastu shastra", "east facing", "north facing"]
+    patterns: ["vastu.*compliant", "east.*facing", "north.*facing"]
+    category: "feature"
+    priority: 2
+    min_confidence: 0.6
+
+builder_reputation:
+  - name: "reputed_builder"
+    keywords: ["reputed builder", "branded builder", "renowned developer", "established builder"]
+    patterns: ["reputed.*builder", "branded.*builder"]
+    category: "builder"
+    priority: 2
+    min_confidence: 0.6
+
+investment_potential:
+  - name: "good_investment"
+    keywords: ["good investment", "investment potential", "rental income", "appreciation"]
+    patterns: ["good.*investment", "investment.*potential"]
+    category: "investment"
+    priority: 3
+    min_confidence: 0.5
+
+  - name: "rental_property"
+    keywords: ["rental", "rent", "tenanted", "rental income", "rental yield"]
+    patterns: ["rental.*income", "rental.*yield"]
+    category: "investment"
+    priority: 3
+    min_confidence: 0.6

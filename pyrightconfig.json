@@ -1,0 +1,25 @@
+{
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "**/node_modules",
+        "**/__pycache__",
+        "**/.venv"
+    ],
+    "extraPaths": [
+        "./src"
+    ],
+    "pythonVersion": "3.12",
+    "pythonPlatform": "Darwin",
+    "typeCheckingMode": "basic",
+    "reportMissingImports": "warning",
+    "reportMissingModuleSource": "warning",
+    "reportImportCycles": "error",
+    "reportUnusedImport": "information",
+    "reportUnusedClass": "information",
+    "reportUnusedFunction": "information",
+    "reportUndefinedVariable": "error",
+    "venvPath": "/Users/amans/Library/Python/3.12",
+    "venv": "lib/python/site-packages"
+}
