@@ -101,11 +101,13 @@ class ThreadSafeWebEnricher:
     def _save_cache(self):
         """Save cache to disk"""
         try:
-            with self.cache_lock:
-                with open(self.cache_file, "wb") as f:
-                    pickle.dump(self.web_cache, f)
+            # Don't acquire lock here if already held - potential deadlock
+            logger.info(f"💾 Saving cache with {len(self.web_cache)} entries...")
+            with open(self.cache_file, "wb") as f:
+                pickle.dump(self.web_cache, f)
+            logger.info(f"✅ Cache saved successfully to {self.cache_file}")
         except Exception as e:
-            logger.warning(f"Failed to save cache: {e}")
+            logger.warning(f"❌ Failed to save cache: {e}")
 
     def _get_cache_key(self, title: str, city: str) -> str:
         """Generate cache key from title and city"""
@@ -185,15 +187,25 @@ class ThreadSafeWebEnricher:
 
                 # Save cache periodically (every 10 entries)
                 if len(self.web_cache) % 10 == 0:
-                    self._save_cache()
+                    try:
+                        with open(self.cache_file, "wb") as f:
+                            pickle.dump(self.web_cache, f)
+                        logger.info(
+                            f"💾 Cache saved with {len(self.web_cache)} entries"
+                        )
+                    except Exception as save_error:
+                        logger.warning(f"Cache save failed: {save_error}")
 
             return enriched_text
 
         except Exception as e:
             logger.warning(f"Web enrichment failed for {entry.id}: {e}")
             # Cache failure as empty result
-            with self.cache_lock:
-                self.web_cache[cache_key] = ""
+            try:
+                with self.cache_lock:
+                    self.web_cache[cache_key] = ""
+            except Exception:
+                pass
             return ""
 
 
@@ -507,9 +519,12 @@ class MultithreadedHybridTagger:
 
                 # Get web content if enabled
                 web_content = ""
+                web_content_retrieved = False
                 if enable_web and self.web_enricher:
                     try:
                         web_content = self.web_enricher.enrich_entry(entry)
+                        # Consider web content retrieved if it has actual content
+                        web_content_retrieved = len(web_content.strip()) > 0
                     except Exception as e:
                         logger.warning(f"Web enrichment failed for {entry.id}: {e}")
 
@@ -533,7 +548,7 @@ class MultithreadedHybridTagger:
                     else ("", "")
                 )
 
-                # Create result
+                # Create result - Web_Enhanced only "Yes" if web content was actually retrieved and used
                 result = {
                     "Entry_ID": entry.id,
                     "Title": entry.title,
@@ -550,7 +565,7 @@ class MultithreadedHybridTagger:
                         [f"{tag.tag_name}({tag.confidence:.2f})" for tag in tags]
                     ),
                     "Categories": ", ".join(list(set([tag.category for tag in tags]))),
-                    "Web_Enhanced": "Yes" if enable_web else "No",
+                    "Web_Enhanced": "Yes" if web_content_retrieved else "No",
                 }
 
                 results.append(result)

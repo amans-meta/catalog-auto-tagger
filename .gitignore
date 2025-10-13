@@ -125,6 +125,9 @@ logs/
 cache/
 models/cache/
 temp/
+output/
+input/
+data/
 
 # IDE
 .vscode/
