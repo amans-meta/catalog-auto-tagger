@@ -1,9 +1,7 @@
 """
-Utility functions and helpers for catalog auto-tagging
+Utility modules for the catalog auto-tagger system
 """
 
-from .config import ConfigManager
-from .search_utils import SearchUtils
-from .text_processing import TextProcessor
+from .config_loader import ConfigLoader, load_settings, load_tags
 
-__all__ = ["ConfigManager", "SearchUtils", "TextProcessor"]
+__all__ = ["load_tags", "load_settings", "ConfigLoader"]

@@ -1,0 +1,56 @@
+Entry_ID,Title,Price_INR,City,Property_Type,Total_Tags,basic_tags,advanced_tags,city_tag,state_tag,Top_5_Tags,Tag_Details,Categories,Web_Enhanced
+r436675,Aurum Alumni Bliss,27500000.0,Sector 22D Yamuna Expressway,Apartment,2,premium,highway_access,,,"premium, highway_access",premium(0.64) | highway_access(0.51),"location, price_range",Yes
+r454311,Express Zenith Tower A,26399998.0,Sector 77,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r440690,Ace Acreville,30000000.0,Sector 22A Yamuna Expressway,Land,3,premium,"highway_access, plot",,,"premium, highway_access, plot",premium(0.64) | highway_access(0.51) | plot(0.30),"property_type, location, price_range",Yes
+r436912,VVIP Addresses Greater Noida,35858442.0,Sector-12,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r416826,Trecento Residencies by Gaurs,125000000.0,Jaypee Greens,Apartment,1,luxury,,,,luxury,luxury(0.64),price_range,Yes
+r395716,Fusion The Brook,11150000.0,Sector-12,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r402728,Sublime Spring Elmas,16260000.0,Sector-12,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r430588,CRC Maesta,32500000.0,Sector 1 Greater Noida West,Apartment,2,premium,plot,,,"premium, plot",premium(0.64) | plot(0.30),"property_type, price_range",Yes
+r409011,Fusion The Rivulet,11001000.0,Sector-12,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r410958,Max Estates 128,113485920.0,Sector 128,Apartment,3,luxury,"plot, highway_access",,,"luxury, plot, highway_access",luxury(0.64) | plot(0.30) | highway_access(0.21),"property_type, location, price_range",Yes
+r384794,RG Mirage,30520000.0,Sector 120,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r446528,Godrej Sora,83100000.0,Sector 53,Apartment,1,luxury,,,,luxury,luxury(0.64),price_range,Yes
+r432550,TARC Ishva,77000000.0,Sector 63A,Apartment,1,luxury,,,,luxury,luxury(0.64),price_range,Yes
+r424460,M3M Mansion,36036000.0,Sector 113,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r444331,Signature Global Cloverdale SPR,38757500.0,Sector 71,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r404070,DLF The Arbour,84925000.0,Sector 63,Apartment,1,luxury,,,,luxury,luxury(0.64),price_range,Yes
+r438244,Indiabulls Estate and Club,39899999.0,Sector 104,Apartment,2,premium,highway_access,,,"premium, highway_access",premium(0.64) | highway_access(0.21),"location, price_range",Yes
+r422937,Krisumi Waterside Residences,44370000.0,Sector 36A,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r433274,Signature Global Daxin Vistas,21000000.0,Sohna,House,2,premium,villa,,,"premium, villa",premium(0.64) | villa(0.30),"property_type, price_range",Yes
+r442988,ROF Pravasa,24000000.0,Sector 88A,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r433317,Max Estate 360,54831000.0,Sector 36A,Apartment,1,luxury,,,,luxury,luxury(0.64),price_range,Yes
+r318679,Hero Homes,15935500.0,Sector 104,Apartment,2,premium,highway_access,,,"premium, highway_access",premium(0.64) | highway_access(0.21),"location, price_range",Yes
+r444343,Runwal Raaya,109900000.0,Worli,Apartment,1,luxury,,,,luxury,luxury(0.64),price_range,Yes
+r426835,Tricity Aspire,11200000.0,Kharghar,Apartment,2,premium,plot,,,"premium, plot",premium(0.64) | plot(0.30),"property_type, price_range",Yes
+r425106,Ruparel Stardom,23500001.0,Evershine Nagar,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r382672,Mahaavir Exotique,5400872.0,Kharghar,Apartment,2,mid_range,villa,,,"mid_range, villa",mid_range(0.64) | villa(0.30),"property_type, price_range",Yes
+r422558,Godrej Reserve,25400521.0,Kandivali East,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r430268,Raheja Lunaris,10514876.0,Juinagar,Apartment,3,premium,"plot, highway_access",,,"premium, plot, highway_access",premium(0.64) | plot(0.30) | highway_access(0.21),"property_type, location, price_range",Yes
+r88315,Ruparel Vivanza,25500000.0,Byculla,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r403694,Raheja Modern Vivarea,125175000.0,Mahalaxmi,Apartment,1,luxury,,,,luxury,luxury(0.64),price_range,Yes
+r404243,Lodha Divino,37746933.0,Matunga,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r403096,Codename Cloud City,5871558.0,Kharghar,Apartment,1,mid_range,,,,mid_range,mid_range(0.64),price_range,Yes
+r447590,Paramount By Gala Habitats,37920000.0,Matunga East,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r434130,Ruparel Urbana,9490000.0,Kurla,Apartment,1,mid_range,,,,mid_range,mid_range(0.64),price_range,Yes
+r416159,Lodha Mirabelle ,14900002.0,Hebbal,Apartment,2,premium,it_hub,,,"premium, it_hub",premium(0.64) | it_hub(0.49),"location, price_range",Yes
+r425508,Casagrand Regal,10864865.0,Thanisandra,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r418697,Provident Deansgate,21000000.0,IVC Road,House,2,premium,villa,,,"premium, villa",premium(0.64) | villa(0.30),"property_type, price_range",Yes
+r443697,Bhartiya Garden Estate,6708000.0,Sadahalli,Apartment,1,mid_range,,,,mid_range,mid_range(0.64),price_range,Yes
+r426518,DSR The Courtyard,10315885.0,Sarjapur Road,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r437293,Eastfield by Urbanest Realty,12744054.0,Hoskote,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r424098,Modern Spaaces Engrace Vista,15501000.0,Sarjapur Road,Apartment,2,premium,spa_wellness,,,"premium, spa_wellness",premium(0.64) | spa_wellness(0.27),"luxury_indicators, price_range",Yes
+r367669,Assetz Canvas and Cove,17100000.0,Begur,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r411425,Sarang by Sumadhura,13475000.0,Whitefield,Apartment,2,premium,villa,,,"premium, villa",premium(0.64) | villa(0.30),"property_type, price_range",Yes
+r418789,Bhartiya Nikoo Homes 5,12683240.0,Chokkanahalli,Apartment,2,premium,highway_access,,,"premium, highway_access",premium(0.64) | highway_access(0.21),"location, price_range",Yes
+r435540,Signature Premier,12000000.0,Sarjapur Road,Apartment,2,premium,villa,,,"premium, villa",premium(0.64) | villa(0.30),"property_type, price_range",Yes
+r433250,Rohan Saroha,8146228.0,Bhugaon,Apartment,1,mid_range,,,,mid_range,mid_range(0.64),price_range,Yes
+r383225,VTP Euphoria,9159135.0,Kharadi,Apartment,1,mid_range,,,,mid_range,mid_range(0.64),price_range,Yes
+r419466,Merlin Ventana,13199998.0,Baner,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r442001,Nyati Evania,19000003.0,Sadashiv Peth,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r401614,Kalpataru Jade Skyline,19000000.0,Baner,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r401175,Mahindra Citadel,16300000.0,Pimpri Chinchwad,Apartment,3,premium,"plot, highway_access",,,"premium, plot, highway_access",premium(0.64) | plot(0.30) | highway_access(0.21),"property_type, location, price_range",Yes
+r405131,Lodha Panache,12547563.0,Hinjewadi,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r437218,Vilas Palladio Kharadi Central Phase 2,10999996.0,Kharadi,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r399309,Lodha Giardino,30000000.0,Kharadi,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes
+r410862,Nyati Emerald,11800000.0,Baner,Apartment,1,premium,,,,premium,premium(0.64),price_range,Yes

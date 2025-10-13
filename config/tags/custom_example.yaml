@@ -1,0 +1,116 @@
+# Example Custom Tag Configuration
+# This demonstrates how easy it is to create new tag categories and definitions
+
+# Custom Sustainability Features
+sustainability:
+  solar_powered:
+    keywords:
+      - solar panels
+      - solar power
+      - renewable energy
+      - green energy
+    patterns:
+      - "solar.*panels?"
+      - "renewable.*energy"
+    category: sustainability
+    weight: 0.8
+
+  rainwater_harvesting:
+    keywords:
+      - rainwater harvesting
+      - water conservation
+      - rainwater collection
+    patterns:
+      - "rainwater.*harvest"
+      - "water.*conservation"
+    category: sustainability
+    weight: 0.7
+
+  energy_efficient:
+    keywords:
+      - energy efficient
+      - LED lighting
+      - star rated
+      - eco friendly
+    patterns:
+      - "energy.*efficient"
+      - "\\d+.*star.*rated"
+    category: sustainability
+    weight: 0.6
+
+# Custom Pet-Friendly Features
+pet_friendly:
+  pet_allowed:
+    keywords:
+      - pet friendly
+      - pets allowed
+      - dog friendly
+      - cat friendly
+    patterns:
+      - "pet.*friendly"
+      - "pets?.*allowed"
+    category: pet_features
+    weight: 0.8
+
+  pet_park:
+    keywords:
+      - pet park
+      - dog park
+      - pet area
+      - dog run
+    patterns:
+      - "pet.*park"
+      - "dog.*park"
+    category: pet_features
+    weight: 0.7
+
+# Custom Technology Features
+smart_tech:
+  smart_locks:
+    keywords:
+      - smart locks
+      - digital locks
+      - keyless entry
+      - biometric access
+    patterns:
+      - "smart.*locks?"
+      - "digital.*locks?"
+    category: technology
+    weight: 0.8
+
+  video_intercom:
+    keywords:
+      - video intercom
+      - video calling
+      - digital doorbell
+      - smart doorbell
+    patterns:
+      - "video.*intercom"
+      - "smart.*doorbell"
+    category: technology
+    weight: 0.7
+
+# Custom Price Ranges for Different Markets
+price_ranges_luxury:
+  super_luxury:
+    keywords:
+      - super luxury
+      - ultra premium
+      - exclusive
+      - bespoke
+    price_range:
+      min: 100000000  # Above 10 Crore
+      max: null
+    category: luxury_price
+    weight: 1.0
+
+  premium_plus:
+    keywords:
+      - premium plus
+      - high-end premium
+      - exclusive premium
+    price_range:
+      min: 75000000   # 7.5-10 Crore
+      max: 100000000
+    category: luxury_price
+    weight: 0.9

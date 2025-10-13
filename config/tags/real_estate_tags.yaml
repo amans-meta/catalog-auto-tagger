@@ -1,0 +1,410 @@
+# Real Estate Tag Definitions
+# Extracted from the actual production tagger logic
+# This file contains all tag definitions used by the catalog taggers
+
+# Property Types
+property_types:
+  villa:
+    keywords:
+      - villa
+      - independent house
+      - bungalow
+      - individual house
+    category: property_type
+    weight: 1.0
+
+  plot:
+    keywords:
+      - plot
+      - land
+      - vacant land
+      - residential plot
+      - site
+    category: property_type
+    weight: 1.0
+
+# Bedroom Configurations
+bedroom_configurations:
+  studio:
+    keywords:
+      - studio
+      - 1rk
+      - 1 rk
+      - studio apartment
+    patterns:
+      - studio
+      - "1\\s*rk"
+    category: bedrooms
+    weight: 0.9
+
+  1bhk:
+    keywords:
+      - 1bhk
+      - 1 bhk
+      - 1bed
+      - 1 bedroom
+      - one bedroom
+    patterns:
+      - "1\\s*bhk"
+      - "1\\s*bed"
+    category: bedrooms
+    weight: 0.9
+
+  2bhk:
+    keywords:
+      - 2bhk
+      - 2 bhk
+      - 2bed
+      - 2 bedroom
+      - two bedroom
+    patterns:
+      - "2\\s*bhk"
+      - "2\\s*bed"
+    category: bedrooms
+    weight: 0.9
+
+  3bhk:
+    keywords:
+      - 3bhk
+      - 3 bhk
+      - 3bed
+      - 3 bedroom
+      - three bedroom
+    patterns:
+      - "3\\s*bhk"
+      - "3\\s*bed"
+    category: bedrooms
+    weight: 0.9
+
+  4bhk:
+    keywords:
+      - 4bhk
+      - 4 bhk
+      - 4bed
+      - 4 bedroom
+      - four bedroom
+    patterns:
+      - "4\\s*bhk"
+      - "4\\s*bed"
+    category: bedrooms
+    weight: 0.9
+
+# Price Ranges (INR)
+price_ranges:
+  budget_friendly:
+    keywords:
+      - budget
+      - affordable
+      - economical
+      - low cost
+    price_range:
+      min: 0
+      max: 2000000  # Under 20 Lakh
+    category: price_range
+    weight: 0.8
+
+  mid_range:
+    keywords:
+      - mid range
+      - moderate
+      - middle segment
+    price_range:
+      min: 2000000  # 20L
+      max: 10000000  # 1Cr
+    category: price_range
+    weight: 0.8
+
+  premium:
+    keywords:
+      - premium
+      - high end
+      - upmarket
+    price_range:
+      min: 10000000  # 1Cr
+      max: 50000000  # 5Cr
+    category: price_range
+    weight: 0.8
+
+  luxury:
+    keywords:
+      - luxury
+      - ultra luxury
+      - elite
+      - super premium
+    price_range:
+      min: 50000000  # Above 5Cr
+      max: null  # No upper limit
+    category: price_range
+    weight: 0.8
+
+# Location Features
+location_features:
+  metro_connectivity:
+    keywords:
+      - metro
+      - metro station
+      - subway
+      - rapid transit
+    patterns:
+      - "metro.*station"
+      - "metro.*connectivity"
+    category: location
+    weight: 0.7
+
+  highway_access:
+    keywords:
+      - highway
+      - expressway
+      - arterial road
+      - main road
+    patterns:
+      - "highway.*access"
+      - "expressway.*connectivity"
+    category: location
+    weight: 0.7
+
+  it_hub:
+    keywords:
+      - IT hub
+      - tech park
+      - software park
+      - cyber city
+    patterns:
+      - "it.*hub"
+      - "tech.*park"
+    category: location
+    weight: 0.7
+
+# Amenities
+amenities:
+  swimming_pool:
+    keywords:
+      - swimming pool
+      - pool
+      - aquatic center
+    patterns:
+      - "swimming.*pool"
+    category: amenity
+    weight: 0.8
+
+  gym_fitness:
+    keywords:
+      - gym
+      - fitness
+      - health club
+      - gymnasium
+    patterns:
+      - "fitness.*center"
+      - "health.*club"
+    category: amenity
+    weight: 0.8
+
+  parking_available:
+    keywords:
+      - parking
+      - garage
+      - car parking
+      - covered parking
+    patterns:
+      - "car.*parking"
+      - "covered.*parking"
+    category: amenity
+    weight: 0.7
+
+  security_24x7:
+    keywords:
+      - security
+      - 24x7
+      - gated
+      - surveillance
+      - guard
+    patterns:
+      - "24.*security"
+      - "security.*guard"
+    category: amenity
+    weight: 0.7
+
+  power_backup:
+    keywords:
+      - power backup
+      - generator
+      - ups
+      - uninterrupted power
+    patterns:
+      - "power.*backup"
+      - "24.*power"
+    category: amenity
+    weight: 0.6
+
+# Property Status
+property_status:
+  ready_to_move:
+    keywords:
+      - ready to move
+      - immediate possession
+      - ready possession
+    patterns:
+      - "ready.*move"
+      - "immediate.*possession"
+    category: status
+    weight: 0.8
+
+  under_construction:
+    keywords:
+      - under construction
+      - upcoming
+      - pre launch
+    patterns:
+      - "under.*construction"
+      - "pre.*launch"
+    category: status
+    weight: 0.8
+
+# Investment Features
+investment_features:
+  investment_grade:
+    keywords:
+      - investment
+      - rental income
+      - appreciation
+      - returns
+    patterns:
+      - "investment.*potential"
+      - "rental.*income"
+    category: investment
+    weight: 0.7
+
+# Luxury Indicators - High-end features
+luxury_indicators:
+  club_house:
+    keywords:
+      - club house
+      - clubhouse
+      - community club
+      - residents club
+      - exclusive club
+    patterns:
+      - "club.*house"
+      - "residents.*club"
+    category: luxury_indicators
+    weight: 0.9
+
+  spa_wellness:
+    keywords:
+      - spa
+      - wellness center
+      - wellness club
+      - massage center
+      - rejuvenation center
+    patterns:
+      - "spa.*center"
+      - "wellness.*center"
+    category: luxury_indicators
+    weight: 0.9
+
+  concierge_service:
+    keywords:
+      - concierge
+      - butler service
+      - personal assistant
+      - lifestyle management
+      - valet service
+    patterns:
+      - "concierge.*service"
+      - "butler.*service"
+    category: luxury_indicators
+    weight: 1.0
+
+  golf_facilities:
+    keywords:
+      - golf course
+      - golf club
+      - putting green
+      - golf academy
+      - golf simulator
+    patterns:
+      - "golf.*course"
+      - "golf.*club"
+      - "putting.*green"
+    category: luxury_indicators
+    weight: 0.9
+
+  tennis_sports:
+    keywords:
+      - tennis court
+      - badminton court
+      - squash court
+      - sports academy
+      - racquet sports
+    patterns:
+      - "tennis.*court"
+      - "badminton.*court"
+      - "sports.*academy"
+    category: luxury_indicators
+    weight: 0.8
+
+  infinity_pool:
+    keywords:
+      - infinity pool
+      - rooftop pool
+      - olympic size pool
+      - temperature controlled pool
+    patterns:
+      - "infinity.*pool"
+      - "rooftop.*pool"
+      - "olympic.*pool"
+    category: luxury_indicators
+    weight: 0.9
+
+  private_elevator:
+    keywords:
+      - private elevator
+      - dedicated elevator
+      - personal lift
+      - exclusive elevator access
+    patterns:
+      - "private.*elevator"
+      - "dedicated.*elevator"
+      - "personal.*lift"
+    category: luxury_indicators
+    weight: 0.9
+
+  imported_marble:
+    keywords:
+      - imported marble
+      - italian marble
+      - premium flooring
+      - luxury finishes
+      - designer interiors
+    patterns:
+      - "imported.*marble"
+      - "italian.*marble"
+      - "luxury.*finishes"
+    category: luxury_indicators
+    weight: 0.8
+
+  smart_home:
+    keywords:
+      - smart home
+      - home automation
+      - intelligent systems
+      - IoT enabled
+      - voice controlled
+    patterns:
+      - "smart.*home"
+      - "home.*automation"
+      - "intelligent.*systems"
+    category: luxury_indicators
+    weight: 0.8
+
+  helipad:
+    keywords:
+      - helipad
+      - helicopter landing
+      - private aviation
+      - aviation facility
+    patterns:
+      - "heli.*pad"
+      - "helicopter.*landing"
+    category: luxury_indicators
+    weight: 1.0

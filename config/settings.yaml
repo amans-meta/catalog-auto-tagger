@@ -1,187 +1,108 @@
-# Catalog Auto-Tagger Configuration
-# This file contains all system configuration settings
+# Catalog Auto-Tagger System Settings
+# Configuration for the production tagging system
 
-web_search:
-  enabled: true
-  max_results_per_query: 10
-  timeout_seconds: 30
-  rate_limit_delay: 1.0
-  user_agent: "Catalog-Auto-Tagger/1.0 (Educational Purpose)"
-  search_engines: ["google", "duckduckgo"]
-
-  # Google Custom Search Engine Configuration
-  # You need to set these environment variables:
-  # GOOGLE_SEARCH_API_KEY=your_api_key
-  # GOOGLE_CSE_ID=your_search_engine_id
-  google_cse_id: null  # Set this or use GOOGLE_CSE_ID env var
-
-scraping:
-  enabled: true
-  timeout_seconds: 30
-  max_page_size_mb: 5
-  respect_robots_txt: true
-  max_concurrent_requests: 5
-  delay_between_requests: 1.0
-  user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-
+# Machine Learning Configuration
 ml_models:
-  text_classification:
-    enabled: true
-    model_name: "sentence-transformers/all-MiniLM-L6-v2"
+  sentence_transformers:
+    model_name: "all-MiniLM-L6-v2"
     cache_dir: "./models/cache"
+    show_progress_bar: false
     device: "auto"  # auto, cpu, cuda
 
-  openai:
-    enabled: false
-    model: "gpt-3.5-turbo"
-    max_tokens: 1000
-    temperature: 0.1
-    # Set OPENAI_API_KEY environment variable
-
+# Processing Configuration
 processing:
-  batch_size: 10
-  max_concurrent_products: 3
-  retry_attempts: 3
-  cache_results: true
-  cache_ttl_hours: 24
+  # Multithreading settings
+  max_workers: 4
+  chunk_size: 50
 
-output:
-  format: "json"  # json, csv
-  include_reasoning: true
-  min_confidence_threshold: 0.3
-  max_tags_per_product: 20
+  # Confidence thresholds
+  confidence_thresholds:
+    semantic_only: 0.12
+    with_web_boost: 0.18
+    default: 0.15
 
+  # Tag limits
+  max_tags_per_entry: 20
+
+# Web Enrichment Configuration (for hybrid tagger)
+web_enrichment:
+  enabled: true
+  rate_limit_delay: 1.0  # seconds between requests
+  timeout_seconds: 15
+  max_search_results: 5
+
+  # Generic search query templates (customize per industry)
+  search_templates:
+    - '"{title}" specifications features details'
+    - '{title} {description} reviews information'
+    - '{title} product details specifications'
+
+# File I/O Configuration
+file_io:
+  input_formats:
+    - xlsx
+    - csv
+  output_format: csv
+
+  # Default file paths
+  default_input_file: "input/example.xlsx"
+  default_output_files:
+    catalog_only: "output/catalog_only_results.csv"
+    hybrid: "output/hybrid_tagged_results.csv"
+
+# Logging Configuration
 logging:
-  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
-  file: "./logs/catalog_tagger.log"
-  max_file_size_mb: 10
-  backup_count: 5
+  level: INFO  # DEBUG, INFO, WARNING, ERROR
+  format: "%(levelname)s: %(message)s"
 
-# Currency configurations
-currency:
-  default: "INR"
-  supported: ["INR", "USD", "EUR", "GBP"]
+# Generic Field Mapping Configuration
+# Maps various input field names to standardized fields across all industries
+field_mappings:
+  id:
+    - id
+    - product_id
+    - listing_id
+    - item_id
+    - sku
 
-  # Price range definitions for different markets
-  inr_price_ranges:
-    budget_friendly:
-      min: 0
-      max: 2000000  # 20 Lakh
-      description: "Budget-friendly properties under ₹20 Lakh"
+  title:
+    - name
+    - title
+    - product_name
+    - item_name
+    - model
 
-    mid_range:
-      min: 2000000  # 20 Lakh
-      max: 10000000  # 1 Crore
-      description: "Mid-range properties ₹20 Lakh - ₹1 Crore"
+  description:
+    - description
+    - desc
+    - details
+    - summary
+    - specifications
+    - features
 
-    high_end:
-      min: 10000000  # 1 Crore
-      max: 50000000  # 5 Crore
-      description: "High-end properties ₹1 Crore - ₹5 Crore"
+  price:
+    - price
+    - cost
+    - amount
+    - value
+    - msrp
 
-    luxury:
-      min: 50000000  # 5 Crore
-      max: null
-      description: "Luxury properties above ₹5 Crore"
+  category:
+    - category
+    - type
+    - classification
+    - genre
+    - department
 
-# Catalog-specific configurations
-catalog_types:
-  real_estate:
-    web_search_templates:
-      - "{title} {address} real estate"
-      - "{title} property details"
-      - "{address} home listing"
+  brand:
+    - brand
+    - manufacturer
+    - make
+    - company
 
-    scraping_rules:
-      priority_sites: ["zillow.com", "realtor.com", "trulia.com"]
-      skip_sites: ["pinterest.com", "youtube.com"]
-
-    ml_model_config:
-      focus_keywords: ["property", "home", "house", "real estate", "listing"]
-
-  # Indian Real Estate Configuration
-  indian_real_estate:
-    web_search_templates:
-      - "{title} {address} property India"
-      - "{title} real estate Mumbai Delhi Bangalore"
-      - "{address} property details India"
-      - "{title} property price {city}"
-
-    scraping_rules:
-      priority_sites:
-        - "99acres.com"
-        - "magicbricks.com"
-        - "commonfloor.com"
-        - "housing.com"
-        - "makaan.com"
-        - "proptiger.com"
-        - "squareyards.com"
-        - "nobroker.in"
-      skip_sites: ["pinterest.com", "youtube.com", "facebook.com", "instagram.com"]
-
-    ml_model_config:
-      focus_keywords: ["property", "flat", "apartment", "villa", "plot", "bhk", "sqft", "gated community"]
-
-    # Indian-specific field mappings
-    field_mappings:
-      # Standard fields
-      id: ["id", "property_id", "listing_id", "prop_id"]
-      title: ["title", "property_name", "name", "listing_title"]
-      description: ["description", "details", "property_details", "about_property"]
-      price: ["price", "property_price", "cost", "amount", "rent", "sale_price"]
-      category: ["property_type", "type", "category", "building_type"]
-
-      # Indian-specific fields
-      city: ["city", "location", "area", "locality"]
-      bhk: ["bhk", "bedroom", "bedrooms", "rooms"]
-      sqft: ["area", "built_up_area", "carpet_area", "super_area", "sqft", "square_feet"]
-      floor: ["floor", "floor_no", "property_floor"]
-      total_floors: ["total_floors", "floors_in_building"]
-      furnishing: ["furnishing", "furnished", "furnish_type"]
-      parking: ["parking", "car_parking", "covered_parking"]
-      amenities: ["amenities", "facilities", "features"]
-
-  ecommerce:
-    web_search_templates:
-      - "{brand} {title} specifications"
-      - "{title} reviews price"
-      - "{title} buy online"
-
-    scraping_rules:
-      priority_sites: ["amazon.com", "ebay.com", "walmart.com"]
-      skip_sites: ["pinterest.com", "youtube.com", "instagram.com"]
-
-    ml_model_config:
-      focus_keywords: ["product", "buy", "purchase", "specifications", "reviews"]
-
-  # Indian E-commerce Configuration
-  indian_ecommerce:
-    web_search_templates:
-      - "{brand} {title} price India"
-      - "{title} buy online India"
-      - "{title} specifications reviews"
-      - "{brand} {title} Amazon Flipkart"
-
-    scraping_rules:
-      priority_sites:
-        - "amazon.in"
-        - "flipkart.com"
-        - "snapdeal.com"
-        - "paytmmall.com"
-        - "shopclues.com"
-        - "myntra.com"
-        - "ajio.com"
-        - "nykaa.com"
-      skip_sites: ["pinterest.com", "youtube.com", "facebook.com", "instagram.com"]
-
-    ml_model_config:
-      focus_keywords: ["product", "buy", "price", "discount", "offer", "specifications", "review"]
-
-# Feature flags
-features:
-  enable_web_enhancement: true
-  enable_ml_classification: true
-  enable_semantic_search: true
-  enable_image_analysis: false  # Future feature
-  enable_price_comparison: true
-  enable_sentiment_analysis: true
+  location:
+    - location
+    - city
+    - address
+    - region
+    - area
