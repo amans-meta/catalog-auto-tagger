@@ -32,6 +32,8 @@ catalog-auto-tagger/
 │       └── __init__.py
 ├── config/                     # ⚙️ Flexible configuration system
 │   ├── settings.yaml           # System settings & parameters
+│   ├── catalog_types/          # Industry-specific field mappings
+│   │   └── real_estate.yaml    # Real estate field configuration
 │   └── tags/
 │       └── real_estate_tags.yaml  # Tag definitions (customizable!)
 ├── .env                        # 🔒 API credentials (keep secure)
@@ -180,6 +182,56 @@ cp config/tags/custom_example.yaml config/tags/automotive_tags.yaml
 python3 src/catalog_tagger.py automotive
 python3 src/hybrid_tagger.py automotive
 ```
+
+### **Catalog Type Configuration** (`config/catalog_types/*.yaml`)
+New industry-specific field mappings for flexible catalog structure:
+
+```yaml
+# config/catalog_types/real_estate.yaml
+id_field: "home_listing_id"     # Unique identifier column
+cache_key_field: "name"         # Field for web search caching
+
+# Industry-specific output columns
+output_fields:
+  city_tag: "Address.city"      # Maps input field to output column
+  state_tag: "Address.state"    # Custom output fields per industry
+```
+
+**Benefits:**
+- 🎯 **No hardcoded field names** - System adapts to any catalog structure
+- 🔄 **Industry-specific outputs** - Each domain can define custom output columns
+- 📝 **Clear field mapping** - Documents which input fields are used
+
+### **Advanced Tag Matching Modes:**
+Tags now support multiple matching strategies:
+
+1. **`semantic`** (default): ML-based semantic similarity matching
+2. **`text_only`**: Exact keyword/pattern matching only (no semantic)
+3. **`price_only`**: Price-range based matching (no text analysis)
+
+**Example:**
+```yaml
+# Bedroom tags use text_only for precise matching
+3bhk:
+  keywords: [3bhk, 3 bhk, 3 bedroom]
+  matching_mode: text_only  # No semantic confusion
+  category: bedrooms
+
+# Price tags use price_only for exact bracketing
+premium:
+  price_field: "Price"          # Which field to check
+  price_range:
+    min: 10000000               # 1 Cr
+    max: 40000000               # 4 Cr
+  matching_mode: price_only     # Only price-based
+  category: price_range
+```
+
+### **Property Type Verification:**
+System now verifies property_type tags against catalog data:
+- ✅ **80% penalty** for property_type mismatches (e.g., "plot" tag on "Apartment")
+- ✅ **Confidence boost** for correct property_type matches
+- ✅ **Works even when catalog lacks property_type field**
 
 ### **✅ Industry-Agnostic Design:**
 - 🚫 **No hardcoded industry assumptions** - The system requires explicit catalog type specification
