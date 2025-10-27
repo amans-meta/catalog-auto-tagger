@@ -10,6 +10,7 @@ property_types:
       - independent house
       - bungalow
       - individual house
+    matching_mode: text_only
     category: property_type
     weight: 1.0
 
@@ -20,6 +21,7 @@ property_types:
       - vacant land
       - residential plot
       - site
+    matching_mode: text_only
     category: property_type
     weight: 1.0
 
@@ -34,6 +36,7 @@ bedroom_configurations:
     patterns:
       - studio
       - "1\\s*rk"
+    matching_mode: text_only
     category: bedrooms
     weight: 0.9
 
@@ -47,6 +50,7 @@ bedroom_configurations:
     patterns:
       - "1\\s*bhk"
       - "1\\s*bed"
+    matching_mode: text_only
     category: bedrooms
     weight: 0.9
 
@@ -60,6 +64,7 @@ bedroom_configurations:
     patterns:
       - "2\\s*bhk"
       - "2\\s*bed"
+    matching_mode: text_only
     category: bedrooms
     weight: 0.9
 
@@ -73,6 +78,7 @@ bedroom_configurations:
     patterns:
       - "3\\s*bhk"
       - "3\\s*bed"
+    matching_mode: text_only
     category: bedrooms
     weight: 0.9
 
@@ -86,54 +92,59 @@ bedroom_configurations:
     patterns:
       - "4\\s*bhk"
       - "4\\s*bed"
+    matching_mode: text_only
     category: bedrooms
     weight: 0.9
 
 # Price Ranges (INR)
 price_ranges:
-  budget_friendly:
-    keywords:
-      - budget
-      - affordable
-      - economical
-      - low cost
+  affordable:
+    keywords: []
+    price_field: "Price"  # Field to use for price comparison
     price_range:
       min: 0
-      max: 2000000  # Under 20 Lakh
+      max: 5000000  # 0-50L
+    matching_mode: price_only
     category: price_range
     weight: 0.8
 
   mid_range:
-    keywords:
-      - mid range
-      - moderate
-      - middle segment
+    keywords: []
+    price_field: "Price"  # Field to use for price comparison
     price_range:
-      min: 2000000  # 20L
+      min: 5000000  # 50L
       max: 10000000  # 1Cr
+    matching_mode: price_only
     category: price_range
     weight: 0.8
 
   premium:
-    keywords:
-      - premium
-      - high end
-      - upmarket
+    keywords: []
+    price_field: "Price"  # Field to use for price comparison
     price_range:
       min: 10000000  # 1Cr
-      max: 50000000  # 5Cr
+      max: 40000000  # 4Cr
+    matching_mode: price_only
     category: price_range
     weight: 0.8
 
   luxury:
-    keywords:
-      - luxury
-      - ultra luxury
-      - elite
-      - super premium
+    keywords: []
+    price_field: "Price"  # Field to use for price comparison
     price_range:
-      min: 50000000  # Above 5Cr
+      min: 40000000  # 4Cr
+      max: 80000000  # 8Cr
+    matching_mode: price_only
+    category: price_range
+    weight: 0.8
+
+  ultra_luxury:
+    keywords: []
+    price_field: "Price"  # Field to use for price comparison
+    price_range:
+      min: 80000000  # 8Cr+
       max: null  # No upper limit
+    matching_mode: price_only
     category: price_range
     weight: 0.8
 
@@ -185,7 +196,7 @@ amenities:
     patterns:
       - "swimming.*pool"
     category: amenity
-    weight: 0.8
+    weight: 0.9
 
   gym_fitness:
     keywords:
@@ -197,7 +208,7 @@ amenities:
       - "fitness.*center"
       - "health.*club"
     category: amenity
-    weight: 0.8
+    weight: 0.9
 
   parking_available:
     keywords:
@@ -209,7 +220,7 @@ amenities:
       - "car.*parking"
       - "covered.*parking"
     category: amenity
-    weight: 0.7
+    weight: 0.6
 
   security_24x7:
     keywords:
@@ -222,7 +233,7 @@ amenities:
       - "24.*security"
       - "security.*guard"
     category: amenity
-    weight: 0.7
+    weight: 0.6
 
   power_backup:
     keywords:
@@ -234,7 +245,7 @@ amenities:
       - "power.*backup"
       - "24.*power"
     category: amenity
-    weight: 0.6
+    weight: 0.7
 
 # Property Status
 property_status:
@@ -246,6 +257,7 @@ property_status:
     patterns:
       - "ready.*move"
       - "immediate.*possession"
+    matching_mode: text_only
     category: status
     weight: 0.8
 
@@ -257,6 +269,7 @@ property_status:
     patterns:
       - "under.*construction"
       - "pre.*launch"
+    matching_mode: text_only
     category: status
     weight: 0.8
 
@@ -329,16 +342,18 @@ luxury_indicators:
     category: luxury_indicators
     weight: 0.9
 
-  tennis_sports:
+  sports_facilities:
     keywords:
       - tennis court
       - badminton court
       - squash court
       - sports academy
       - racquet sports
+      - pickleball court
     patterns:
       - "tennis.*court"
       - "badminton.*court"
+      - "pickleball.*court"
       - "sports.*academy"
     category: luxury_indicators
     weight: 0.8
@@ -353,6 +368,7 @@ luxury_indicators:
       - "infinity.*pool"
       - "rooftop.*pool"
       - "olympic.*pool"
+    matching_mode: text_only
     category: luxury_indicators
     weight: 0.9
 
@@ -366,6 +382,7 @@ luxury_indicators:
       - "private.*elevator"
       - "dedicated.*elevator"
       - "personal.*lift"
+    matching_mode: text_only
     category: luxury_indicators
     weight: 0.9
 
@@ -374,12 +391,12 @@ luxury_indicators:
       - imported marble
       - italian marble
       - premium flooring
-      - luxury finishes
       - designer interiors
     patterns:
       - "imported.*marble"
       - "italian.*marble"
       - "luxury.*finishes"
+    matching_mode: text_only
     category: luxury_indicators
     weight: 0.8
 
@@ -406,5 +423,6 @@ luxury_indicators:
     patterns:
       - "heli.*pad"
       - "helicopter.*landing"
+    matching_mode: text_only
     category: luxury_indicators
     weight: 1.0

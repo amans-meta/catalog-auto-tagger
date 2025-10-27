@@ -62,10 +62,11 @@ class CatalogOnlyTagger:
         self.embedding_model = None
         self._initialize_embeddings()
 
-        # Load tags from configuration - FAIL if not available
+        # Load catalog configuration and tags - FAIL if not available
         try:
-            from utils import load_tags
+            from utils import load_catalog_config, load_tags
 
+            self.catalog_config = load_catalog_config(catalog_type)
             self.tags = load_tags(catalog_type)
             if not self.tags:
                 raise ValueError(f"No tags found for catalog_type '{catalog_type}'")
@@ -163,38 +164,48 @@ class CatalogOnlyTagger:
             evidence = []
             source = "textual"
 
-            # SEMANTIC SIMILARITY on catalog text only
-            semantic_score = self._compute_semantic_similarity(entry.full_text, tag_def)
-            if semantic_score > 0:
-                confidence += semantic_score * 0.6  # 60% weight for semantic
-                evidence.append(f"semantic_similarity: {semantic_score:.3f}")
-                source = "semantic"
+            # Check matching mode
+            matching_mode = tag_def.get("matching_mode", "semantic")  # default to semantic
 
-            # Keyword matching
-            keywords = tag_def.get("keywords", [])
-            keyword_matches = []
+            # Skip semantic/text matching for price_only tags
+            if matching_mode == "price_only":
+                # Only use price-based matching below, skip all text matching
+                pass
+            else:
+                # SEMANTIC SIMILARITY on catalog text only (skip if text_only mode)
+                semantic_score = 0.0
+                if matching_mode != "text_only":
+                    semantic_score = self._compute_semantic_similarity(entry.full_text, tag_def)
+                    if semantic_score > 0:
+                        confidence += semantic_score * 0.6  # 60% weight for semantic
+                        evidence.append(f"semantic_similarity: {semantic_score:.3f}")
+                        source = "semantic"
 
-            for keyword in keywords:
-                if keyword.lower() in text_lower:
-                    keyword_matches.append(keyword)
-                    confidence += 0.3 * tag_def["weight"]
+                # Keyword matching
+                keywords = tag_def.get("keywords", [])
+                keyword_matches = []
 
-            if keyword_matches:
-                evidence.append(f"keywords: {keyword_matches}")
+                for keyword in keywords:
+                    if keyword.lower() in text_lower:
+                        keyword_matches.append(keyword)
+                        confidence += 0.3 * tag_def["weight"]
 
-            # Pattern matching
-            patterns = tag_def.get("patterns", [])
-            pattern_matches = []
-            for pattern in patterns:
-                try:
-                    if re.search(pattern, text_lower, re.IGNORECASE):
-                        pattern_matches.append(pattern)
-                        confidence += 0.4 * tag_def["weight"]
-                except re.error:
-                    continue
+                if keyword_matches:
+                    evidence.append(f"keywords: {keyword_matches}")
 
-            if pattern_matches:
-                evidence.append(f"patterns: {pattern_matches}")
+                # Pattern matching
+                patterns = tag_def.get("patterns", [])
+                pattern_matches = []
+                for pattern in patterns:
+                    try:
+                        if re.search(pattern, text_lower, re.IGNORECASE):
+                            pattern_matches.append(pattern)
+                            confidence += 0.4 * tag_def["weight"]
+                    except re.error:
+                        continue
+
+                if pattern_matches:
+                    evidence.append(f"patterns: {pattern_matches}")
 
             # Price-based matching
             price_range = tag_def.get("price_range")
@@ -204,8 +215,19 @@ class CatalogOnlyTagger:
                     confidence += 0.8 * tag_def["weight"]
                     evidence.append(f"price: ₹{entry.price:,.0f} in range")
 
-            # Property type specific boosts
-            if tag_name in entry.property_type.lower():
+            # Property type specific boosts and verification
+            if tag_def["category"] == "property_type":
+                # Verify property_type tags against catalog data (if available)
+                if entry.property_type and entry.property_type.strip():
+                    if tag_name in entry.property_type.lower():
+                        confidence += 0.5
+                        evidence.append("property_type match")
+                    else:
+                        # If catalog has explicit property_type and tag doesn't match, penalize heavily
+                        # Remove the confidence < 0.6 condition - always penalize mismatches
+                        confidence *= 0.2  # Reduce confidence by 80%
+                        evidence.append("property_type_mismatch_penalty")
+            elif entry.property_type and tag_name in entry.property_type.lower():
                 confidence += 0.5
                 evidence.append("property_type match")
 
@@ -217,8 +239,13 @@ class CatalogOnlyTagger:
                         confidence += 0.3
                         evidence.append(f"location match: {keyword}")
 
-            # Apply confidence threshold (slightly higher since no web boost)
-            threshold = 0.15 if semantic_score > 0 else 0.2
+            # Apply confidence threshold
+            # Higher threshold for property_type tags (0.5) to avoid false positives
+            if tag_def["category"] == "property_type":
+                threshold = 0.5
+            else:
+                threshold = 0.15 if semantic_score > 0 else 0.2
+
             if confidence >= threshold:
                 results.append(
                     TagResult(
@@ -358,15 +385,23 @@ class MultithreadedCatalogTagger:
 
         # Create full text
         full_text_parts = [title, description, property_type, city]
+
+        # Excluded fields that should NOT be used for tagging
+        excluded_fields = [
+            "home_listing_id",
+            "name",
+            "Price",
+            "Property_Type",
+            "Address.city",
+        ]
+
         for key, value in row_data.items():
+            # Skip custom labels and excluded fields
+            if "custom_label" in key.lower() or "customlabel" in key.lower():
+                continue
+
             if pd.notna(value) and isinstance(value, str) and len(value) < 200:
-                if key not in [
-                    "home_listing_id",
-                    "name",
-                    "Price",
-                    "Property_Type",
-                    "Address.city",
-                ]:
+                if key not in excluded_fields:
                     full_text_parts.append(value)
 
         full_text = " ".join([str(part) for part in full_text_parts if part])

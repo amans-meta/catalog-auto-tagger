@@ -61,6 +61,10 @@ class ConfigLoader:
                             "weight": tag_config.get("weight", 1.0),
                         }
 
+                        # Add matching_mode if it exists
+                        if "matching_mode" in tag_config:
+                            internal_config["matching_mode"] = tag_config["matching_mode"]
+
                         # Add patterns if they exist
                         if "patterns" in tag_config:
                             internal_config["patterns"] = tag_config["patterns"]
@@ -133,8 +137,35 @@ class ConfigLoader:
         }
 
 
+    def load_catalog_config(self, catalog_type: str) -> Dict[str, Any]:
+        """Load catalog type configuration (field mappings, output fields, etc.)"""
+        try:
+            catalog_config_file = self.config_dir / "catalog_types" / f"{catalog_type}.yaml"
+
+            if not catalog_config_file.exists():
+                logger.error(f"Catalog config file not found: {catalog_config_file}")
+                raise FileNotFoundError(
+                    f"No catalog configuration found for catalog_type '{catalog_type}'"
+                )
+
+            with open(catalog_config_file, "r", encoding="utf-8") as f:
+                catalog_config = yaml.safe_load(f) or {}
+
+            logger.info(f"✅ Loaded catalog config from {catalog_config_file}")
+            return catalog_config
+
+        except Exception as e:
+            logger.error(f"Failed to load catalog configuration for '{catalog_type}': {e}")
+            raise
+
+
 # Global config loader instance
 config_loader = ConfigLoader()
+
+
+def load_catalog_config(catalog_type: str) -> Dict[str, Any]:
+    """Convenience function to load catalog configuration"""
+    return config_loader.load_catalog_config(catalog_type)
 
 
 def load_tags(catalog_type: str) -> Dict[str, Any]:

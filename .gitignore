@@ -129,6 +129,10 @@ output/
 input/
 data/
 
+# Documentation (internal only)
+BUILD_PROJECT_PROPOSAL.md
+BUILD_PROJECT_PROPOSAL.docx
+
 # IDE
 .vscode/
 .idea/
