@@ -24,10 +24,11 @@ catalog-auto-tagger/
 ├── output/                      # 📤 All results saved here
 │   ├── catalog_only_results.csv
 │   └── hybrid_tagged_results.csv
-├── src/                        # 💻 Production code
+├── src/                        # Production code
 │   ├── catalog_tagger.py       # Fast catalog-only tagger
 │   ├── hybrid_tagger.py        # Web-enhanced hybrid tagger
-│   └── utils/                   # 🔧 Utility modules
+│   ├── export_cache.py         # Cache export utility
+│   └── utils/                   # Utility modules
 │       ├── config_loader.py    # Configuration management
 │       └── __init__.py
 ├── config/                     # ⚙️ Flexible configuration system
@@ -87,10 +88,11 @@ python3 src/hybrid_tagger.py real_estate --workers 8 --chunk-size 100
 
 ## Supported Catalog Types
 
-- Real Estate Listings
-- E-commerce Products
-- Automotive Listings
-- Generic Product Catalogs
+The architecture supports any domain. Currently, only `real_estate` ships with a pre-built configuration (tags, field mappings, and search templates). To add a new domain:
+
+1. Create `config/tags/<your_domain>_tags.yaml` with tag definitions
+2. Create `config/catalog_types/<your_domain>.yaml` with field mappings
+3. Run with `python3 src/catalog_tagger.py <your_domain>`
 
 ## Installation
 
@@ -151,11 +153,10 @@ luxury_indicators:
 - ⚙️ **Web enrichment settings** - Rate limits, timeouts, search templates
 
 ### **Benefits of Configuration-Driven System:**
-- 🎯 **No code changes needed** to add new tags or adjust settings
-- 🚀 **Hot configuration reloads** - Update tags without restarting
-- 📈 **Easy scaling** - Adjust processing parameters for different workloads
-- 🔄 **Version control friendly** - Track tag evolution over time
-- 🏗️ **Multiple catalog types** - Easy to create new tag sets for different domains
+- **No code changes needed** to add new tags or adjust settings
+- **Easy scaling** - Adjust processing parameters for different workloads
+- **Version control friendly** - Track tag evolution over time
+- **Multiple catalog types** - Easy to create new tag sets for different domains
 
 ### **Quick Customization Examples:**
 
@@ -184,23 +185,62 @@ python3 src/hybrid_tagger.py automotive
 ```
 
 ### **Catalog Type Configuration** (`config/catalog_types/*.yaml`)
-New industry-specific field mappings for flexible catalog structure:
+Industry-specific field mappings and domain configuration:
 
 ```yaml
 # config/catalog_types/real_estate.yaml
-id_field: "home_listing_id"     # Unique identifier column
-cache_key_field: "name"         # Field for web search caching
 
-# Industry-specific output columns
+# Field mappings - tells the tagger which columns to read
+id_field: "home_listing_id"
+title_field: "name"
+description_fields: ["description", "desc", "details", "summary"]
+price_field: "Price"
+category_field: "Property_Type"
+location_field: "Address.city"
+cache_key_field: "name"
+
+# Which tag categories count as "basic" vs "advanced" in output
+basic_tag_categories: ["bedrooms", "amenity", "price_range", "status"]
+
+# Output column mappings
 output_fields:
-  city_tag: "Address.city"      # Maps input field to output column
-  state_tag: "Address.state"    # Custom output fields per industry
+  city_tag: "Address.city"
+  state_tag: "Address.state"
+
+# Web search templates (hybrid tagger)
+search_templates:
+  - '"{title}" {location} specifications features details'
+  - '"{title}" real estate property India'
+
+# Web content relevance indicators
+web_relevance_indicators:
+  - features
+  - amenities
+  - luxury
+  - bedroom
+
+# City-to-state mapping (when catalog lacks a state field)
+city_state_mapping:
+  mumbai: maharashtra
+  bangalore: karnataka
+
+# Confidence threshold overrides per category
+confidence_overrides:
+  property_type: 0.5
 ```
 
+**Field Resolution Strategy:**
+1. If `catalog_config` specifies a field name (e.g., `title_field: "name"`), that column is used directly
+2. If not specified, the system tries each alias from `settings.yaml` `field_mappings` (e.g., `["name", "title", "product_name", ...]`)
+3. First matching column wins; empty string if nothing matches
+
+This means you can omit fields from `catalog_types/*.yaml` and the system will auto-detect columns using the generic aliases in `settings.yaml`.
+
 **Benefits:**
-- 🎯 **No hardcoded field names** - System adapts to any catalog structure
-- 🔄 **Industry-specific outputs** - Each domain can define custom output columns
-- 📝 **Clear field mapping** - Documents which input fields are used
+- **Config-driven field resolution** - System adapts to any catalog structure
+- **Industry-specific outputs** - Each domain can define custom output columns
+- **Location intelligence** - Config-driven city/state extraction from catalog and web data
+- **Clear field mapping** - Documents which input fields are used
 
 ### **Advanced Tag Matching Modes:**
 Tags now support multiple matching strategies:
@@ -233,11 +273,12 @@ System now verifies property_type tags against catalog data:
 - ✅ **Confidence boost** for correct property_type matches
 - ✅ **Works even when catalog lacks property_type field**
 
-### **✅ Industry-Agnostic Design:**
-- 🚫 **No hardcoded industry assumptions** - The system requires explicit catalog type specification
-- 🛡️ **Fail-safe design** - Won't run with missing or invalid configurations
-- ⚙️ **Pure configuration-driven** - Zero code changes needed for new industries
-- 🎯 **Flexible tag structure** - Support any domain: automotive, electronics, retail, etc.
+### **Industry-Agnostic Design:**
+- **No hardcoded field names** - All field mappings come from config files
+- **Fail-safe design** - Won't run with missing or invalid configurations
+- **Configuration-driven** - Zero code changes needed for new industries
+- **Flexible tag structure** - Support any domain: automotive, electronics, retail, etc.
+- **Settings consumed at runtime** - ML model, confidence thresholds, workers, file paths, web enrichment params all read from `settings.yaml`
 
 **Adjusting Processing Settings:**
 ```yaml

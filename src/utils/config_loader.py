@@ -12,6 +12,25 @@ import yaml
 
 logger = logging.getLogger(__name__)
 
+# Default values for catalog config fields so missing keys don't cause KeyErrors
+CATALOG_CONFIG_DEFAULTS = {
+    "id_field": None,             # falls back to settings field_mappings
+    "title_field": None,          # falls back to settings field_mappings
+    "description_fields": None,   # falls back to settings field_mappings
+    "price_field": None,          # falls back to settings field_mappings
+    "category_field": None,       # falls back to settings field_mappings
+    "location_field": None,       # falls back to settings field_mappings
+    "cache_key_field": None,
+    "basic_tag_categories": [],   # empty = all tags treated equally
+    "search_templates": None,     # falls back to settings web_enrichment templates
+    "web_relevance_indicators": None,  # falls back to generic list
+    "confidence_overrides": {},
+    "output_fields": {},
+    "city_state_mapping": {},
+    "city_patterns": {},
+    "state_patterns": {},
+}
+
 
 class ConfigLoader:
     """Load configuration from YAML files"""
@@ -151,7 +170,12 @@ class ConfigLoader:
             with open(catalog_config_file, "r", encoding="utf-8") as f:
                 catalog_config = yaml.safe_load(f) or {}
 
-            logger.info(f"✅ Loaded catalog config from {catalog_config_file}")
+            # Apply defaults for missing keys
+            for key, default_value in CATALOG_CONFIG_DEFAULTS.items():
+                if key not in catalog_config:
+                    catalog_config[key] = default_value
+
+            logger.info(f"Loaded catalog config from {catalog_config_file}")
             return catalog_config
 
         except Exception as e:

@@ -1,11 +1,93 @@
 # Real Estate Catalog Configuration
 
 # Field mappings for real estate catalogs
-id_field: "home_listing_id"  # Unique identifier field
-cache_key_field: "name"  # Field to use for web search caching
+id_field: "home_listing_id"
+title_field: "name"
+description_fields: ["description", "desc", "details", "summary"]
+price_field: "Price"
+category_field: "Property_Type"
+location_field: "Address.city"
+cache_key_field: "name"
 
-# Industry-specific output columns (real estate specific)
+# Which tag categories count as "basic" vs "advanced" in output
+basic_tag_categories: ["bedrooms", "amenity", "price_range", "status"]
+
+# Output column mappings
 # Maps output column name to input field name
 output_fields:
-  city_tag: "Address.city"  # Output column "city_tag" populated from input field "Address.city"
-  # state_tag: "Address.state"  # Uncomment if state field exists in catalog
+  city_tag: "Address.city"
+  state_tag: "Address.state"
+
+# Domain-specific web search templates (hybrid tagger)
+# Available template variables: {title}, {location}, {category}
+search_templates:
+  - '"{title}" {location} specifications features details'
+  - '"{title}" real estate property India'
+  - '{title} property location city state'
+  - '"{title}" {category}'
+
+# Domain-specific web content relevance indicators
+web_relevance_indicators:
+  - features
+  - specifications
+  - amenities
+  - price
+  - luxury
+  - bedroom
+  - bhk
+  - villa
+  - apartment
+  - plot
+  - township
+
+# City-to-state mapping (used when catalog lacks a state field)
+city_state_mapping:
+  mumbai: maharashtra
+  pune: maharashtra
+  delhi: delhi
+  new delhi: delhi
+  gurgaon: haryana
+  gurugram: haryana
+  faridabad: haryana
+  noida: uttar pradesh
+  ghaziabad: uttar pradesh
+  greater noida: uttar pradesh
+  bangalore: karnataka
+  bengaluru: karnataka
+  hyderabad: telangana
+  chennai: tamil nadu
+  kolkata: west bengal
+  ahmedabad: gujarat
+
+# City name variations for web content extraction (hybrid tagger)
+# Maps canonical city name to list of variations to search for
+city_patterns:
+  mumbai: ["mumbai", "bombay"]
+  delhi: ["delhi", "new delhi"]
+  bangalore: ["bangalore", "bengaluru"]
+  gurgaon: ["gurgaon", "gurugram"]
+  noida: ["noida", "greater noida"]
+  pune: ["pune", "puna"]
+  hyderabad: ["hyderabad"]
+  chennai: ["chennai", "madras"]
+  kolkata: ["kolkata", "calcutta"]
+  ahmedabad: ["ahmedabad"]
+  faridabad: ["faridabad"]
+  ghaziabad: ["ghaziabad"]
+
+# State indicators for web content extraction (hybrid tagger)
+# Maps canonical state name to list of indicators to search for
+state_patterns:
+  haryana: ["haryana", "gurgaon", "gurugram", "faridabad"]
+  delhi: ["delhi", "new delhi"]
+  uttar pradesh: ["uttar pradesh", "noida", "ghaziabad", "greater noida"]
+  karnataka: ["karnataka", "bangalore", "bengaluru"]
+  maharashtra: ["maharashtra", "mumbai", "pune"]
+  telangana: ["telangana", "hyderabad"]
+  tamil nadu: ["tamil nadu", "chennai"]
+  west bengal: ["west bengal", "kolkata"]
+  gujarat: ["gujarat", "ahmedabad"]
+
+# Optional: confidence threshold overrides per category
+confidence_overrides:
+  property_type: 0.5
